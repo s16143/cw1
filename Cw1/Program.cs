@@ -12,11 +12,30 @@ namespace Cw1
             //var newPerson = new Person { FirstName = "Daniel"};
 
             var url = args.Length > 0 ? args[0] : "https://www.pja.edu.pl";
-            var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync(url);
+
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync(url))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string htmlContent = await response.Content.ReadAsStringAsync();
+                        var regex = new Regex("[a-z]+[a-z0-9]*@[a-z0-9]+\\.[a-z]+", RegexOptions.IgnoreCase);
+                        var matches = regex.Matches(htmlContent);
+
+                        foreach (var match in matches)
+                        {
+                            Console.WriteLine(match.ToString());
+                        }
+                    }
+                }
+
+            }
+               // var response = await httpClient.GetAsync(url);
 
             // 2XX itp.
-            if (response.IsSuccessStatusCode)
+         /*   if (response.IsSuccessStatusCode)
             {
                 string htmlContent = await response.Content.ReadAsStringAsync();
                 var regex = new Regex("[a-z]+[a-z0-9]*@[a-z0-9]+\\.[a-z]+",RegexOptions.IgnoreCase);
@@ -27,6 +46,7 @@ namespace Cw1
                     Console.WriteLine(match.ToString());
                 }
             }
+            */
 
         }
     }
