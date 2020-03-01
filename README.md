@@ -1,2 +1,2 @@
 # cw1
-APBD
+Grzegorz Sochański, 15c, s16143
